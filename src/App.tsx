@@ -9,6 +9,7 @@ import CandidateExplorer from "./pages/CandidateExplorer";
 import CandidateProfile from "./pages/CandidateProfile";
 import JobDescriptionUpload from "./pages/JobDescriptionUpload";
 import Login from "./pages/Login";
+import GitHubAnalyzer from "./pages/GitHubAnalyzer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/analyzer" element={<GitHubAnalyzer />} />
           <Route path="/candidates" element={<CandidateExplorer />} />
           <Route path="/candidate/:username" element={<CandidateProfile />} />
           <Route path="/upload" element={<JobDescriptionUpload />} />
