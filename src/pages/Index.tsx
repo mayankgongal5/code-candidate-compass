@@ -1,6 +1,5 @@
-
 import { Link } from "react-router-dom";
-import { Github, Users, Zap, Shield, BarChart3, Search } from "lucide-react";
+import { Users, Zap, Shield, BarChart3, Search, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -19,7 +18,7 @@ const Index = () => {
             </div>
             <nav className="hidden md:flex space-x-8">
               <Link to="/analyzer" className="text-gray-600 hover:text-blue-600 font-medium">
-                GitHub Analyzer
+                Analyze
               </Link>
               <Link to="/candidates" className="text-gray-600 hover:text-blue-600 font-medium">
                 Candidates
@@ -51,12 +50,12 @@ const Index = () => {
             <Button size="lg" asChild className="px-8 py-4 text-lg">
               <Link to="/analyzer">
                 <Search className="w-5 h-5 mr-2" />
-                Analyze GitHub Profile
+                Analyze Profile
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="px-8 py-4 text-lg">
               <Link to="/candidates">
-                <Github className="w-5 h-5 mr-2" />
+                <Code className="w-5 h-5 mr-2" />
                 Browse Candidates
               </Link>
             </Button>
