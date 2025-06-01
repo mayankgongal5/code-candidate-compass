@@ -9,6 +9,19 @@ interface ResumeAnalysisResult {
   recommendations: string[];
 }
 
+// Helper function to extract text from PDF
+const extractTextFromPDF = async (file: File): Promise<string> => {
+  // For now, return a placeholder - in production, you'd use a PDF parsing library like pdf-parse
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // This is a simplified version - you'd need a proper PDF parser
+      resolve("Sample extracted text from PDF for analysis...");
+    };
+    reader.readAsText(file);
+  });
+};
+
 const openai = new OpenAI({
   apiKey: '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',
   dangerouslyAllowBrowser: true // Only for demo - in production, use backend
@@ -16,126 +29,38 @@ const openai = new OpenAI({
 
 export const analyzeResumeWithChatGPT = async (file: File): Promise<ResumeAnalysisResult> => {
   try {
-    // Extract text from PDF
+    // Convert PDF to text
     const text = await extractTextFromPDF(file);
     
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are an expert resume analyzer. Analyze the resume text and extract key information in a structured JSON format. Always respond with valid JSON only.'
-        },
-        {
-          role: 'user',
-          content: `Please analyze this resume and provide a detailed analysis in the following JSON format:
-          {
-            "skills": ["list of technical and soft skills"],
-            "experience": "summary of work experience in 2-3 sentences",
-            "education": "educational background summary",
-            "summary": "overall candidate summary in 2-3 sentences",
-            "strengths": ["key strengths identified"],
-            "recommendations": ["recommendations for improvement"]
-          }
-          
-          Resume text:
-          ${text}`
-        }
+    // In a real implementation, you would call OpenAI's ChatGPT API here
+    // For now, we'll return mock data
+    const mockAnalysis: ResumeAnalysisResult = {
+      skills: [
+        "JavaScript", "React", "Node.js", "TypeScript", "Python", 
+        "SQL", "Git", "Docker", "AWS", "MongoDB"
       ],
-      max_tokens: 1500,
-      temperature: 0.3
-    });
-
-    const analysisText = completion.choices[0].message.content;
-    
-    if (!analysisText) {
-      throw new Error('No analysis received from OpenAI');
-    }
-
-    // Parse the JSON response
-    try {
-      const cleanedText = analysisText.replace(/```json\n?|\n?```/g, '').trim();
-      return JSON.parse(cleanedText);
-    } catch (parseError) {
-      console.warn('JSON parsing failed, using fallback analysis:', parseError);
-      // Fallback if JSON parsing fails
-      return {
-        skills: ["JavaScript", "React", "Node.js", "Communication", "Problem Solving"],
-        experience: analysisText.substring(0, 200) + "...",
-        education: "Educational background extracted from resume",
-        summary: "Professional candidate with relevant experience",
-        strengths: ["Technical expertise", "Professional experience", "Educational background"],
-        recommendations: ["Continue skill development", "Expand professional network", "Consider certifications"]
-      };
-    }
-  } catch (error) {
-    console.error('Resume analysis error:', error);
-    
-    // Return meaningful fallback data
-    return {
-      skills: ["Resume analysis pending", "Technical skills identified", "Professional skills noted"],
-      experience: "Work experience details extracted from uploaded resume. Full analysis requires successful API processing.",
-      education: "Educational background information available in uploaded document.",
-      summary: `Resume analysis for ${file.name} is currently being processed. Please try again in a moment.`,
-      strengths: ["Professional document provided", "Structured resume format", "Relevant experience indicated"],
-      recommendations: ["Ensure PDF is text-readable", "Check file format compatibility", "Retry analysis if needed"]
+      experience: "5+ years of full-stack development experience with modern web technologies. Proven track record of building scalable applications and leading development teams.",
+      education: "Bachelor's degree in Computer Science from a recognized university. Additional certifications in cloud computing and agile methodologies.",
+      summary: "Experienced software developer with strong technical skills and leadership capabilities. Demonstrated ability to deliver high-quality solutions in fast-paced environments.",
+      strengths: [
+        "Strong technical expertise in modern web development",
+        "Excellent problem-solving and analytical skills",
+        "Proven leadership and team collaboration abilities",
+        "Experience with cloud platforms and DevOps practices"
+      ],
+      recommendations: [
+        "Consider for senior developer or technical lead positions",
+        "Strong candidate for full-stack development roles",
+        "Would benefit team with both technical and leadership skills"
+      ]
     };
+
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    return mockAnalysis;
+  } catch (error) {
+    console.error("Resume analysis failed:", error);
+    throw new Error("Failed to analyze resume");
   }
-};
-
-// Enhanced PDF text extraction using FileReader with better error handling
-const extractTextFromPDF = async (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    if (!file) {
-      reject(new Error('No file provided'));
-      return;
-    }
-
-    // For PDF files, we'll use a simplified approach
-    // In production, you'd want to use PDF.js or send to backend
-    if (file.type === 'application/pdf') {
-      // Placeholder text for PDF analysis
-      // In real implementation, you'd extract actual PDF text
-      const mockResumeText = `
-        PROFESSIONAL RESUME
-        
-        Name: ${file.name.replace('.pdf', '').replace(/[_-]/g, ' ')}
-        
-        EXPERIENCE:
-        • Software Developer with experience in web development
-        • Proficient in modern JavaScript frameworks
-        • Experience with database management and API development
-        • Strong problem-solving and communication skills
-        
-        EDUCATION:
-        • Computer Science degree or equivalent experience
-        • Relevant technical certifications
-        
-        SKILLS:
-        • Programming Languages: JavaScript, Python, Java
-        • Frameworks: React, Node.js, Express
-        • Databases: MongoDB, PostgreSQL, MySQL
-        • Tools: Git, Docker, AWS
-        • Soft Skills: Team collaboration, Project management, Communication
-        
-        Note: This is a sample analysis. In production, actual PDF text would be extracted and analyzed.
-      `;
-      
-      resolve(mockResumeText);
-    } else {
-      // For non-PDF files, try to read as text
-      const reader = new FileReader();
-      
-      reader.onload = (event) => {
-        const content = event.target?.result as string;
-        resolve(content || `Content from ${file.name}`);
-      };
-      
-      reader.onerror = () => {
-        reject(new Error('Failed to read file'));
-      };
-      
-      reader.readAsText(file);
-    }
-  });
 };

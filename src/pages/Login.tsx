@@ -1,160 +1,79 @@
-
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Github, Mail, ArrowLeft, Users } from "lucide-react";
+import { ArrowLeft, Users, Github, Sparkles, Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      // In a real app, handle authentication here
-      console.log("Login attempted with:", { email, password });
-    }, 2000);
-  };
-
   const handleGitHubLogin = () => {
     // In a real app, this would redirect to GitHub OAuth
     console.log("GitHub OAuth login");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Back to home */}
-        <div className="mb-6">
-          <Button variant="ghost" asChild>
-            <Link to="/">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Link>
-          </Button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
 
-        <Card className="shadow-xl">
-          <CardHeader className="text-center">
-            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Users className="w-6 h-6 text-white" />
-            </div>
-            <CardTitle className="text-2xl">Welcome to TalentHub</CardTitle>
-            <CardDescription>
-              Sign in to access your recruitment dashboard
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* GitHub OAuth Button */}
-            <Button 
-              onClick={handleGitHubLogin}
-              variant="outline" 
-              className="w-full h-12 border-2 hover:bg-gray-50"
-            >
-              <Github className="w-5 h-5 mr-3" />
-              Continue with GitHub
+      <div className="relative flex items-center justify-center min-h-screen p-4">
+        <div className="w-full max-w-md">
+          {/* Back to home */}
+          <div className="mb-8">
+            <Button variant="ghost" asChild className="hover:bg-white/50 backdrop-blur-sm transition-all duration-200">
+              <Link to="/">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Home
+              </Link>
             </Button>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator className="w-full" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-500">Or continue with email</span>
-              </div>
-            </div>
-
-            {/* Email Login Form */}
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="h-12"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="h-12"
-                />
-              </div>
-
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center space-x-2 cursor-pointer">
-                  <input type="checkbox" className="rounded border-gray-300" />
-                  <span className="text-gray-600">Remember me</span>
-                </label>
-                <a href="#" className="text-blue-600 hover:underline">
-                  Forgot password?
-                </a>
-              </div>
-
-              <Button 
-                type="submit" 
-                className="w-full h-12" 
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Signing in...</span>
-                  </div>
-                ) : (
-                  <>
-                    <Mail className="w-4 h-4 mr-2" />
-                    Sign in with Email
-                  </>
-                )}
-              </Button>
-            </form>
-
-            <div className="text-center text-sm text-gray-600">
-              Don't have an account?{" "}
-              <a href="#" className="text-blue-600 hover:underline font-medium">
-                Sign up for free
-              </a>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Features */}
-        <div className="mt-8 text-center">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">Why choose TalentHub?</h3>
-          <div className="grid grid-cols-1 gap-3 text-sm text-gray-600">
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-              <span>AI-powered candidate matching</span>
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-              <span>Real-time GitHub data analysis</span>
-            </div>
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
-              <span>Comprehensive skill assessment</span>
-            </div>
           </div>
+
+          <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-xl">
+            <CardHeader className="text-center pb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <Sparkles className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                Welcome to NeedOfTheHR
+              </CardTitle>
+              <CardDescription className="text-lg text-gray-600 mt-2">
+                Sign in to access your recruitment dashboard
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6 px-8 pb-8">
+              {/* GitHub OAuth Button */}
+              <Button 
+                onClick={handleGitHubLogin}
+                className="w-full h-14 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white text-lg font-medium shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+              >
+                <Github className="w-6 h-6 mr-3" />
+                Continue with GitHub
+              </Button>
+
+              {/* Features */}
+              <div className="grid grid-cols-1 gap-4 mt-8 pt-6 border-t border-gray-200">
+                <div className="flex items-center space-x-3 text-sm text-gray-600">
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <span>Secure authentication with industry standards</span>
+                </div>
+                <div className="flex items-center space-x-3 text-sm text-gray-600">
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Zap className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <span>Access powerful AI-driven talent insights</span>
+                </div>
+                <div className="flex items-center space-x-3 text-sm text-gray-600">
+                  <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                    <Users className="w-4 h-4 text-indigo-600" />
+                  </div>
+                  <span>Join thousands of hiring professionals</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

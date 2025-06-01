@@ -644,20 +644,28 @@ ${resumeAnalysis.recommendations?.map((rec: string) => `• ${rec}`).join('\n') 
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-indigo-400/10 to-pink-400/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-gray-200/50">
+      <header className="relative bg-white/80 backdrop-blur-xl shadow-sm border-b border-gray-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" asChild className="hover:bg-gray-100/50">
+              <Button variant="ghost" asChild className="hover:bg-gray-100/50 transition-all duration-200">
                 <Link to="/">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Home
                 </Link>
               </Button>
-              <div className="flex items-center space-x-2">
-                <Search className="w-6 h-6 text-gray-700" />
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <Search className="w-5 h-5 text-white" />
+                </div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
                   Profile Analyzer
                 </h1>
@@ -667,27 +675,27 @@ ${resumeAnalysis.recommendations?.map((rec: string) => `• ${rec}`).join('\n') 
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Input Section */}
-        <Card className="mb-8 border-0 shadow-xl bg-white/70 backdrop-blur-sm">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="flex items-center justify-center space-x-3 text-2xl">
-              <div className="p-2 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg">
-                <User className="w-6 h-6 text-white" />
+        <Card className="mb-8 border-0 shadow-2xl bg-white/80 backdrop-blur-xl">
+          <CardHeader className="text-center pb-6">
+            <CardTitle className="flex items-center justify-center space-x-3 text-3xl">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                <User className="w-7 h-7 text-white" />
               </div>
               <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Analyze Profile
+                Analyze Developer Profile
               </span>
             </CardTitle>
-            <CardDescription className="text-base text-gray-600 max-w-2xl mx-auto">
-              Enter a username or profile URL to get comprehensive AI-powered insights about the developer's skills, experience, and coding patterns
+            <CardDescription className="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
+              Enter profile information to get comprehensive AI-powered insights about developer skills, experience, and coding patterns
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CardContent className="space-y-8 px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-3">
-                <Label htmlFor="github-url" className="text-sm font-medium text-gray-700">
-                  Profile Username or URL
+                <Label htmlFor="github-url" className="text-sm font-semibold text-gray-700">
+                  Developer Profile URL or Username
                 </Label>
                 <Input
                   id="github-url"
@@ -695,25 +703,25 @@ ${resumeAnalysis.recommendations?.map((rec: string) => `• ${rec}`).join('\n') 
                   value={githubUrl}
                   onChange={(e) => setGithubUrl(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleAnalyze()}
-                  className="h-12 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-14 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl transition-all duration-200"
                 />
               </div>
               
               <div className="space-y-3">
-                <Label htmlFor="linkedin-url" className="text-sm font-medium text-gray-700">
-                  LinkedIn Profile URL
+                <Label htmlFor="linkedin-url" className="text-sm font-semibold text-gray-700">
+                  LinkedIn Profile URL (Optional)
                 </Label>
                 <Input
                   id="linkedin-url"
                   placeholder="e.g., https://linkedin.com/in/username"
                   value={linkedinUrl}
                   onChange={(e) => setLinkedinUrl(e.target.value)}
-                  className="h-12 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-14 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl transition-all duration-200"
                 />
               </div>
               
               <div className="space-y-3">
-                <Label htmlFor="epfo-number" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="epfo-number" className="text-sm font-semibold text-gray-700">
                   EPFO Number (Optional)
                 </Label>
                 <Input
@@ -721,12 +729,12 @@ ${resumeAnalysis.recommendations?.map((rec: string) => `• ${rec}`).join('\n') 
                   placeholder="e.g., DL/12345/1234567890"
                   value={epfoNumber}
                   onChange={(e) => setEpfoNumber(e.target.value)}
-                  className="h-12 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-14 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl transition-all duration-200"
                 />
               </div>
               
               <div className="space-y-3">
-                <Label htmlFor="resume-upload" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="resume-upload" className="text-sm font-semibold text-gray-700">
                   Upload Resume (PDF)
                 </Label>
                 <div className="relative">
@@ -735,11 +743,11 @@ ${resumeAnalysis.recommendations?.map((rec: string) => `• ${rec}`).join('\n') 
                     type="file"
                     accept=".pdf"
                     onChange={handleResumeUpload}
-                    className="h-12 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    className="h-14 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all duration-200"
                   />
                   {resume && (
-                    <div className="mt-2 text-sm text-green-600 flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="mt-3 text-sm text-green-600 flex items-center bg-green-50 p-3 rounded-lg">
+                      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                       {resume.name}
@@ -749,21 +757,21 @@ ${resumeAnalysis.recommendations?.map((rec: string) => `• ${rec}`).join('\n') 
               </div>
             </div>
             
-            <div className="flex justify-center">
+            <div className="flex justify-center pt-4">
               <Button 
                 onClick={handleAnalyze} 
                 disabled={isAnalyzing || !githubUrl.trim()}
                 size="lg"
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 h-12 shadow-lg hover:shadow-xl transition-all duration-200"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-12 py-4 h-14 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isAnalyzing ? (
                   <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    <Loader2 className="w-6 h-6 mr-3 animate-spin" />
                     Analyzing Profile...
                   </>
                 ) : (
                   <>
-                    <Search className="w-5 h-5 mr-2" />
+                    <Search className="w-6 h-6 mr-3" />
                     Analyze Profile
                   </>
                 )}
@@ -776,9 +784,9 @@ ${resumeAnalysis.recommendations?.map((rec: string) => `• ${rec}`).join('\n') 
         {profile && (
           <div className="space-y-8">
             {/* Profile Info */}
-            <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm overflow-hidden">
+            <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-xl overflow-hidden">
               <CardContent className="p-0">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white">
                   <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
                     <div className="relative">
                       <img
