@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface GitHubProfile {
   login: string;
@@ -66,22 +67,17 @@ const GitHubAnalyzer = () => {
 
   const analyzeWithGemini = async (profileData: GitHubProfile, reposData: Repository[]) => {
     try {
-      const response = await fetch("/api/analyze-github", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('analyze-github', {
+        body: {
           profile: profileData,
           repositories: reposData,
-        }),
+        },
       });
 
-      if (!response.ok) {
+      if (error) {
         throw new Error("Failed to analyze with AI");
       }
 
-      const data = await response.json();
       return data.analysis;
     } catch (error) {
       throw new Error("AI analysis failed");
